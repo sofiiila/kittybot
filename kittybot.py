@@ -9,11 +9,12 @@ def say_hi(update, context):
 
 
 def wake_up(update, context):
-    # В ответ на команду /start
-    # будет отправлено сообщение 'Спасибо, что включили меня'
     chat = update.effective_chat
-    context.bot.send_message(chat_id=chat.id,
-                             text='Спасибо, что включили меня')
+    name = update.message.chat.first_name
+    context.bot.send_message(
+        chat_id=chat.id,
+        text='Спасибо, что вы включили меня, {}!'.format(name)
+        )
 
 # Регистрируется обработчик CommandHandler;
 # он будет отфильтровывать только сообщения с содержимым '/start'
@@ -21,7 +22,7 @@ def wake_up(update, context):
 
 
 updater.dispatcher.add_handler(CommandHandler('start', wake_up))
-
 updater.dispatcher.add_handler(MessageHandler(Filters.text, say_hi))
+
 updater.start_polling()
 updater.idle()
