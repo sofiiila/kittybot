@@ -1,12 +1,13 @@
+import requests
 from telegram import Bot
 
 bot = Bot(token='7577443930:AAFZ8av_6ztN_8iW4VxTX1CBKkmZO-KUC0s')
 
-URL = 'https://cdn2.thecatapi.com/images/3dl.jpg'
+URL = 'https://api.thecatapi.com/v1/images/search'
 
 chat_id = 443566057
-text = 'Вам телеграмма!'
-# Отправка сообщения
-bot.send_message(chat_id, text)
-# Отправка изображения
-bot.send_photo(chat_id, URL)
+
+response = requests.get(URL).json()
+random_cat_url = response[0].get('url')
+
+bot.send_photo(chat_id, random_cat_url)
