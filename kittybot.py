@@ -1,15 +1,28 @@
+import os
 import requests
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+from dotenv import load_dotenv
 
-updater = Updater(token='7577443930:AAFZ8av_6ztN_8iW4VxTX1CBKkmZO-KUC0s')
+load_dotenv()
+
+secret_token = os.getenv('TOKEN')
+
+updater = Updater(token=secret_token)
 URL = 'https://api.thecatapi.com/v1/images/search'
 
 
 def get_new_image():
-    response = requests.get(URL).json()
-    random_cat = response[0].get('url')
-    return random_cat
+    try:
+        response = requests.get(URL).json()
+        random_cat = response[0].get('url')
+        return random_cat
+    except Exception as error:
+        print(error)
+        new_url = 'https://api.thedogapi.com/v1/images/search'
+        response = requests.get(new_url).json()
+        random_cat = response[0].get('url')
+        return random_cat
 
 
 def new_cat(update, context):
